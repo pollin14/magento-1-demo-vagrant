@@ -1,0 +1,19 @@
+
+debug: true
+domain: palaciodehierro.dev
+
+## Override roles (roles/name/vars/main.yml) variables:
+
+fpm_socket: /var/run/www.sock
+fpm_debug: "{{ fpm_debug }}"
+nginx_fpm_socket: "{{fpm_socket}}"
+nginx_debug: "{{ fpm_debug }}"
+nginx_domain: "{{ domain }}"
+ssl_domain: "{{ domain }}"
+nginx_client_max_body_size: 10
+fpm_upload_max_filesize: "{{ nginx_client_max_body_size - 2}}"
+fpm_max_body_size: "{{ nginx_client_max_body_size }}"
+
+# Behavioral inventory parameters of Ansible
+ansible_user: vagrant
+ansible_password: vagrant

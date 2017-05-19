@@ -1,0 +1,48 @@
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+  tags:
+    - packages
+    - nginx
+
+- name: Uninstall apache
+  apt:
+    name: apache2
+    state: absent
+  tags:
+    - packages
+    - nginx
+
+- name: Remove default site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  tags:
+    - nginx
+    - config
+
+- name: "Create virtual hosts {{ nginx_domain }}"
+  template:
+    src: web.conf.nginx.j2
+    dest: '/etc/nginx/sites-available/{{ nginx_domain }}.conf'
+    owner: www-data
+    group: www-data
+  notify: restart nginx
+  tags:
+    - nginx
+    - config
+    - virtual_host
+    - project
+
+- name: "Enable virtual hosts {{ nginx_domain }}"
+  file:
+    state: link
+    src: '/etc/nginx/sites-available/{{ nginx_domain }}.conf'
+    dest: '/etc/nginx/sites-enabled/{{ nginx_domain }}.conf'
+  notify: restart nginx
+  tags:
+    - nginx
+    - config
+    - virtual_host
+    - project

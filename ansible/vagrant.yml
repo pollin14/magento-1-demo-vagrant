@@ -1,0 +1,25 @@
+---
+
+# Run with:
+#
+# ansible-playbook vagrant.yml -i inventaries/local/hosts.yml --tags="dev_tools"
+#
+# ansible-playbook vagrant.yml -i inventaries/local/hosts.yml --tags="config"
+#
+
+- include: mysql.yml
+- include: webservers.yml
+
+- name: webservers
+  hosts: [webservers, mysql]
+  become: true
+  vars:
+    users:
+      - name: Vagrant
+        username: vagrant
+        oh_my_zsh:
+          theme: half-life
+
+  roles:
+    - vagrant
+    - franklinkim.users-oh-my-zsh

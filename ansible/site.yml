@@ -1,0 +1,8 @@
+---
+
+#
+# Main playbook
+#
+
+- include: webservers
+- include: mysql

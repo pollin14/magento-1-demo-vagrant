@@ -1,0 +1,6 @@
+fpm_pool_dir: /etc/php5/fpm/pool.d
+fpm_pool: /etc/php5/fpm/pool.d/www.conf
+fpm_upload_max_filesize: 8                  # Megabytes. Always lower than fpm_max_body_size
+fpm_max_body_size: 10                       # Megabytes
+fpm_socket: /var/run/www.sock
+fpm_debug: false

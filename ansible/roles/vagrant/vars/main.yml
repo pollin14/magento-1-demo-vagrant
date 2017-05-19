@@ -1,0 +1,2 @@
+vagrant_fpm_pool: /etc/php5/fpm/pool.d/www.conf
+vagrant_fpm_socket: /var/run/www.sock
