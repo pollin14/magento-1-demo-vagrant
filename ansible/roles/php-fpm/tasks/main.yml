@@ -85,6 +85,28 @@
     group: www-data
     mode: 0754
 
+- name: Increace realpath cache size of PHP
+  lineinfile:
+    name: "{{ fpm_init_pathname }}"
+    regexp: "realpath_cache_size"
+    line: "realpath_cache_size={{ fpm_realpath_cache_size }}K"
+  notify:
+    - restart php5-fpm
+  tags:
+    - php-fpm
+    - php-config
+
+- name: Increace realpath cache ttl of PHP
+  lineinfile:
+    name: "{{ fpm_init_pathname }}"
+    regexp: "realpath_cache_ttl"
+    line: "realpath_cache_ttl={{ fpm_realpath_cache_ttl }}"
+  notify:
+    - restart php5-fpm
+  tags:
+    - php-fpm
+    - php-config
+
 - name: Force restart of FPM
   service:
     name: php5-fpm

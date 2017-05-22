@@ -4,3 +4,6 @@ fpm_upload_max_filesize: 8                  # Megabytes. Always lower than fpm_m
 fpm_max_body_size: 10                       # Megabytes
 fpm_socket: /var/run/www.sock
 fpm_debug: false
+fpm_init_pathname: /etc/php5/fpm/php.ini
+fpm_realpath_cache_size: 4096               # Kilobytes
+fpm_realpath_cache_ttl: 600                 # Seconds
