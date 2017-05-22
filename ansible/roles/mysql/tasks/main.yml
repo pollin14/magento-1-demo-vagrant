@@ -17,16 +17,25 @@
     - mysql
     - mysql_config
     - mysql_create_db
-    - project
 
 - name: "Create user to {{ mysql_db_name }}"
   mysql_user:
     name: "{{ mysql_new_user }}"
     password: "{{ mysql_new_user_password }}"
-    priv: '*.*:ALL'
+    priv: '{{ mysql_db_name }}.*:ALL'
     state: present
   tags:
     - mysql
     - mysql_config
     - mysql_create_user
-    - project
+
+- name: Enable remoted connections
+  lineinfile:
+    name: /etc/mysql/my.cnf
+    regexp: "^bin-address"
+    line: "bind-address    = 0.0.0.0"
+  tags:
+    - mysql
+    - mysql_config
+  notify:
+    - restart mysql
