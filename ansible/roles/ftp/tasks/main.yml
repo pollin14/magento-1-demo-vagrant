@@ -1,0 +1,18 @@
+- name: Install ftp server
+  apt:
+    name: vsftpd
+    state: present
+  tags:
+    - package
+    - ftp
+
+- name: Enabled upload of files
+  lineinfile:
+    name: /etc/vsftpd.conf
+    regexp: "^#write_enable"
+    line: "write_enable=YES"
+  notify:
+    - vsftpd
+  tags:
+    - config
+    - ftp
