@@ -48,14 +48,28 @@ Vagrant.configure("2") do |config|
   # config.vm.synced_folder "../data", "/vagrant_data"
 
   config.vm.synced_folder configuration["local_path"], "/var/www/" + configuration["domain"],
-      id: configuration["name"],
-      owner: "vagrant",
-      group: "www-data",
-      mount_options: ["dmode=775,fmode=660"]
+    type: "rsync",
+    rsync__exclude: [
+    ".git",
+    ".idea",
+    "var",
+    ".vagrant",
+    "*.zip"
+    ]
+#       id: configuration["name"],
+#       owner: "vagrant",
+#       group: "www-data",
+#       mount_options: ["dmode=775,fmode=660"]
 
   # The hostname of virtual machine
   config.vm.hostname = configuration["name"]
-  config.hostsupdater.aliases = [configuration["full_domain"], configuration["domain"]]
+  config.hostsupdater.aliases = [
+    configuration["domain"],
+    "www." + configuration["domain"],
+    "api." + configuration["domain"],
+    "admin." + configuration["domain"],
+    "ftp." + configuration["domain"]
+    ]
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -75,7 +89,8 @@ Vagrant.configure("2") do |config|
   config.vm.provider :virtualbox do |vb|
     vb.name = configuration["name"]
     # Use VBoxManage to customize the VM. For example to change memory:
-    vb.customize ["modifyvm", :id, "--memory", "2048"]
+    vb.customize ["modifyvm", :id, "--memory", "4096", "--cpuexecutioncap", "100"]
+    vb.cpus = 2
   end
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
