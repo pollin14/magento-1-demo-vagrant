@@ -20,10 +20,12 @@
 
 - name: "Create user to {{ mysql_db_name }}"
   mysql_user:
-    name: "{{ mysql_new_user }}"
-    password: "{{ mysql_new_user_password }}"
+    name: "{{ item.name }}"
+    password: "{{ item.password }}"
     priv: '{{ mysql_db_name }}.*:ALL'
     state: present
+    host: "%"
+  with_items: mysql_new_users
   tags:
     - mysql
     - mysql_config
