@@ -34,7 +34,7 @@
 - name: Enable remoted connections
   lineinfile:
     name: /etc/mysql/my.cnf
-    regexp: "^bin-address"
+    regexp: "^(b|#b)ind-address"
     line: "bind-address    = 0.0.0.0"
   tags:
     - mysql

@@ -9,7 +9,7 @@
 - name: Enabled upload of files
   lineinfile:
     name: /etc/vsftpd.conf
-    regexp: "^#write_enable"
+    regexp: "^(#w|w)rite_enable"
     line: "write_enable=YES"
   notify:
     - vsftpd
