@@ -1,4 +1,4 @@
-nginx_domain: "elpalaciodehierro.dev"
+nginx_domain: default_domian.dev
 nginx_debug: true
 nginx_client_max_body_size: 10            # Megabytes
 nginx_fpm_socket: /var/run/www.sock

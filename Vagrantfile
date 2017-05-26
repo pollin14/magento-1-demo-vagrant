@@ -34,7 +34,7 @@ Vagrant.configure("2") do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network :private_network, ip: "192.168.33.13"
+  config.vm.network :private_network, ip: configuration["vm_ip"]
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -89,8 +89,8 @@ Vagrant.configure("2") do |config|
   config.vm.provider :virtualbox do |vb|
     vb.name = configuration["name"]
     # Use VBoxManage to customize the VM. For example to change memory:
-    vb.customize ["modifyvm", :id, "--memory", "4096", "--cpuexecutioncap", "100"]
-    vb.cpus = 2
+    vb.customize ["modifyvm", :id, "--memory", configuration["vm_memory"], "--cpuexecutioncap", "100"]
+    vb.cpus = configuration["vm_cpus"]
   end
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests
