@@ -1,0 +1,6 @@
+mysql_db_name: default_database
+mysql_new_users:
+  -
+    name: ubuntu
+    password: ubuntu
+
