@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "ansible" do |ansible|
       ansible.playbook = "ansible/vagrant.yml"
       ansible.limit = "all"
-      ansible.inventory_path = "ansible/inventaries/local"
+      ansible.inventory_path = "ansible/inventories/local"
       ansible.config_file = "ansible/ansible.cfg"
       ansible.galaxy_roles_path = "ansible/vendor"
       ansible.galaxy_role_file = "ansible/requirements.yml"
