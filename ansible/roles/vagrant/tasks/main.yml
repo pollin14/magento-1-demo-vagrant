@@ -3,7 +3,7 @@
     state: directory
     path: /var/www
     owner: vagrant
-    group: www-data
+    group: vagrant
     mode: 0754
 
 - name: Change nginx user
