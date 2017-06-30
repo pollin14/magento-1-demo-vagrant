@@ -1,5 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 .idea
+/ansible/inventories/local/*
+!/ansible/inventories/local/**/*.sample.*
 /ansible/inventaries/production
 /ansible/inventaries/staging
 /ansible/vendor
