@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
   # please see the online documentation at vagrantup.com.
 
   # Every Vagrant virtual environment requires a box to build off of.
-  config.vm.box = "ubuntu14.04-amd64"
+  config.vm.box = configuration["vm"]["box"]
 
   # The url from where the 'config.vm.box' box will be fetched if it
   # doesn't already exist on the user's system.
@@ -24,6 +24,7 @@ Vagrant.configure("2") do |config|
       ansible.config_file = "ansible/ansible.cfg"
       ansible.galaxy_roles_path = "ansible/vendor"
       ansible.galaxy_role_file = "ansible/requirements.yml"
+      ansible.raw_arguments = configuration["ansible"]["raw_arguments"]
     end
   # config.vm.network :forwarded_port, host: 4567, guest: 80
 
@@ -34,7 +35,7 @@ Vagrant.configure("2") do |config|
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
-  config.vm.network :private_network, ip: configuration["vm_ip"]
+  config.vm.network :private_network, ip: configuration["vm"]["ip"]
 
   # Create a public network, which generally matched to bridged network.
   # Bridged networks make the machine appear as another physical device on
@@ -62,7 +63,7 @@ Vagrant.configure("2") do |config|
 #       mount_options: ["dmode=775,fmode=660"]
 
   # The hostname of virtual machine
-  config.vm.hostname = configuration["name"]
+  config.vm.hostname = configuration["vm"]["name"]
   config.hostsupdater.aliases = [
     configuration["domain"],
     "www." + configuration["domain"],
@@ -87,10 +88,10 @@ Vagrant.configure("2") do |config|
   # information on available options.
 
   config.vm.provider :virtualbox do |vb|
-    vb.name = configuration["name"]
+    vb.name = configuration["vm"]["name"]
     # Use VBoxManage to customize the VM. For example to change memory:
-    vb.customize ["modifyvm", :id, "--memory", configuration["vm_memory"], "--cpuexecutioncap", "100"]
-    vb.cpus = configuration["vm_cpus"]
+    vb.customize ["modifyvm", :id, "--memory", configuration["vm"]["memory"], "--cpuexecutioncap", "100"]
+    vb.cpus = configuration["vm"]["cpus"]
   end
 
   # Enable provisioning with Puppet stand alone.  Puppet manifests

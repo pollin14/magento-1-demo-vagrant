@@ -1,11 +1,13 @@
-name: elpalaciodehierro
-domain: elpalaciodehierro.dev
-full_domain: www.elpalaciodehierro.dev
-local_path: ../palacioviejos
+domain: proyect-x.dev
+full_domain: www.proyect-x.dev
+local_path: ../proyect-x
 
-############################
-# Virtual machine settings
-###########################
-vm_ip: 192.168.1.11
-vm_cpus: 2
-vm_memory: 4096
+vm:
+  box: "ubuntu14.04-amd64"
+  name: proyect-x
+  ip: 192.168.1.11
+  cpus: 2
+  memory: 4096
+
+ansible:
+  raw_arguments: [-vvvv]
