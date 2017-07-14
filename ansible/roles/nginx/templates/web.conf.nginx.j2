@@ -62,6 +62,8 @@ server {
 
         fastcgi_param   SCRIPT_FILENAME    $document_root$fastcgi_script_name;
         fastcgi_param   HTTP_PROXY ""; # httpoxy vulnerability
+        fastcgi_read_timeout {{ nginx_fastcgi_read_timeout }};
+
     }
 
     location @rewrite_app {
