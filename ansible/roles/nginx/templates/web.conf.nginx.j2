@@ -28,6 +28,9 @@ server {
 
     client_max_body_size {{ nginx_client_max_body_size }}M;
 
+    # The web sites allow access to all its subdomains.
+    add_header "Access-Control-Allow-Origin" "https://www.{{ nginx_domain }}";
+
     #
     # Any thing with a slash as prefix is rewrite. Note that try_files will always fails to serve the file so
     # the path is always rewritten.
