@@ -69,7 +69,11 @@ Vagrant.configure("2") do |config|
     "www." + configuration["domain"],
     "api." + configuration["domain"],
     "admin." + configuration["domain"],
-    "ftp." + configuration["domain"]
+    "ftp." + configuration["domain"],
+    "js." + configuration["domain"],
+    "css." + configuration["domain"],
+    "media." + configuration["domain"],
+    "skin." + configuration["domain"]
     ]
 
   # Provider-specific configuration so you can fine-tune various
