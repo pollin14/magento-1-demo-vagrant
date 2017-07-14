@@ -26,6 +26,8 @@
     state: present
     host: "%"
   with_items: mysql_new_users
+  notify:
+    - restart mysql
   tags:
     - mysql
     - mysql_config
