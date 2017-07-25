@@ -1,0 +1,25 @@
+
+debug: true
+domain: eph.dev
+web_timeout: 30
+
+## Override roles (roles/{role_name}/vars/main.yml) variables:
+
+fpm_socket: /var/run/www.sock
+fpm_debug: "{{ debug }}"
+nginx_fpm_socket: "{{fpm_socket}}"
+nginx_debug: "{{ fpm_debug }}"
+nginx_domain: "{{ domain }}"
+ssl_domain: "{{ domain }}"
+nginx_client_max_body_size: 10
+fpm_upload_max_filesize: "{{ nginx_client_max_body_size - 2}}"
+fpm_max_body_size: "{{ nginx_client_max_body_size }}"
+fpm_request_terminate_timeout: "{{ web_timeout }}"
+fpm_max_execution_time: "{{ web_timeout }}"
+nginx_fastcgi_read_timeout: "{{ web_timeout }}"
+fpm_xdebug_profiler_output_dir: "/var/www/{{ domain }}/var"
+mysql_db_name: eph
+
+# Behavioral inventory parameters of Ansible
+ansible_user: vagrant
+ansible_password: vagrant
