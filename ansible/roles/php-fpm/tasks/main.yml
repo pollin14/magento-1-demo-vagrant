@@ -32,7 +32,7 @@
   when: fpm_debug
 
 - name: Configure xdebug
-  copy:
+  template:
     src: xdebug.ini
     dest: /etc/php5/mods-available/xdebug.ini
   when: fpm_debug

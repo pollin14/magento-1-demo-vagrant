@@ -8,3 +8,4 @@ fpm_init_pathname: /etc/php5/fpm/php.ini
 fpm_realpath_cache_size: 4096               # Kilobytes
 fpm_realpath_cache_ttl: 600                 # Seconds
 fpm_request_terminate_timeout: 30           # Seconds
+fpm_xdebug_profiler_output_dir: /var/ww
