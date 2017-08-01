@@ -22,7 +22,7 @@
   mysql_user:
     name: "{{ item.name }}"
     password: "{{ item.password }}"
-    priv: '{{ mysql_db_name }}.*:ALL'
+    priv: '*.*:ALL'
     state: present
     host: "%"
   with_items: mysql_new_users
@@ -43,3 +43,23 @@
     - mysql_config
   notify:
     - restart mysql
+
+- name: Create slow query file
+  file:
+    state: present
+    path: /var/log/mysql/log-slow-queries.log
+  when: debug
+
+- name: Enable slow queries
+  lineinfile:
+    name: /etc/mysql/my.cnf
+    regexp: "log-slow-queries="
+    line: "log-slow-queries=/var/log/mysql/log-slow-queries.log"
+  when: debug
+
+- name: Enable slow queries
+  lineinfile:
+    name: /etc/mysql/my.cnf
+    regexp: "log-slow-queries="
+    line: "set-variable=long_query_time= 5"
+  when: debug
