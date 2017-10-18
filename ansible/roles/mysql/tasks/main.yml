@@ -4,7 +4,7 @@
     state: present
   with_items:
     - python-mysqldb
-    - mysql-server-5.6
+    - mysql-server
   tags:
     - packages
     - mysql
@@ -35,7 +35,7 @@
 
 - name: Enable remoted connections
   lineinfile:
-    name: /etc/mysql/my.cnf
+    name: /etc/mysql/mysql.conf.d/mysqld.cnf
     regexp: "^(b|#b)ind-address"
     line: "bind-address    = 0.0.0.0"
   tags:
@@ -43,23 +43,24 @@
     - mysql_config
   notify:
     - restart mysql
+#
+#- name: Create slow query file
+#  file:
+#    state: present
+#    path: /var/log/mysql/log-slow-queries.log
+#  when: debug
+#
+#- name: Enable slow queries
+#  lineinfile:
+#    name: /etc/mysql/my.cnf
+#    regexp: "log-slow-queries="
+#    line: "log-slow-queries=/var/log/mysql/log-slow-queries.log"
+#  when: debug
 
-- name: Create slow query file
-  file:
-    state: present
-    path: /var/log/mysql/log-slow-queries.log
-  when: debug
-
-- name: Enable slow queries
-  lineinfile:
-    name: /etc/mysql/my.cnf
-    regexp: "log-slow-queries="
-    line: "log-slow-queries=/var/log/mysql/log-slow-queries.log"
-  when: debug
-
-- name: Enable slow queries
-  lineinfile:
-    name: /etc/mysql/my.cnf
-    regexp: "log-slow-queries="
-    line: "set-variable=long_query_time= 5"
-  when: debug
+# Tasks not tested
+#- name: Enable slow queries
+#  lineinfile:
+#    name: /etc/mysql/my.cnf
+#    regexp: "log-slow-queries="
+#    line: "set-variable=long_query_time= 5"
+#  when: debug

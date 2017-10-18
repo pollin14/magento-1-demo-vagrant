@@ -1,3 +1,29 @@
+- name: Install dev tools
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+      - nodejs
+      - npm
+      - ruby
+      - libnotify-bin
+
+#- name: Fixed nodejs in Ubuntu
+#  file:
+#    state: link
+#    src: /usr/bin/nodejs
+#    dest: /usr/bin/node
+
+- name: Install npm packages
+  shell: "npm install"
+  args:
+    chdir: "/var/www/{{domain}}"
+
+- name: Create gulp alias
+  shell: echo 'alias gulp="./node_modules/gulp/bin/gulp.js"' > .zshrc
+  args:
+    chdir: /home/vagrant
+
 - name: Create base directory
   file:
     state: directory
@@ -20,7 +46,7 @@
 
 - name: Change php-fpm group
   lineinfile:
-    name: /etc/php5/fpm/pool.d/www.conf
+    name: /etc/php/7.0/fpm/pool.d/www.conf
     regexp: '^listen\.group.*www-data'
     line: 'listen.group = vagrant'
 
@@ -37,10 +63,3 @@
     name: vagrant
     groups: www-data
 
-- name: Download and install magerun
-  get_url:
-    url: http://files.magerun.net/n98-magerun.phar
-    dest: /usr/local/bin/magerun
-    mode: 0755
-  tags:
-    - dev_tools

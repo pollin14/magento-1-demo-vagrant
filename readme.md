@@ -5,10 +5,16 @@ You need to install
 * Ansible 2.*
 * Vagrant from its website
 * git
+* sshpass
+
 
 ## Installation
 
-To run 
+To run
+
+ ```
+ vagrant plugin install vagrant-notify
+ ```
 
 ```
 vagrant up
@@ -16,7 +22,7 @@ vagrant up
 
 ## Ansible notes
 
-To debug a variable you can, 
+To debug a variable you can,
 
 ## Useful tips
 
@@ -36,4 +42,11 @@ That is all.
 
 ## Issues
 
-If you are using rsync or FTP it is necessary reload the VM to solve permission issues.
+* If you are using rsync or FTP it is necessary reload the VM to solve permission issues.
+* You could need to create the ansible's log file
+
+```bash
+sudo touch /var/log/ansible.log &&\
+sudo chmod a+rw /var/log/ansible.log &&\
+sudo chmod a+rwx /var/log/
+```

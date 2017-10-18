@@ -3,15 +3,13 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - php5
-    - php5-cli
-    - php5-fpm
-    - php5-mcrypt
-    - php5-mysql
-    - php5-curl
+    - php
+    - php-mcrypt
+    - php-mysql
+    - php-curl
     - php-pear
-    - php5-gd
-    - php-apc
+    - php-gd
+    - php-mbstring
     - curl
     - postfix
     - vim
@@ -20,29 +18,35 @@
   tags:
     - packages
 
-- name: Enabled mcrypt
-  command: php5enmod mcrypt
-  notify:
-    - restart php5-fpm
+#- name: Enabled mcrypt
+#  command: php5enmod mcrypt
+#  notify:
+#    - restart php7.0-fpm
 
 - name: Install xdebug
   apt:
-    name: php5-xdebug
+    name: php-xdebug
     state: present
   when: fpm_debug
+
+- name: Create xdebug log file
+  file:
+    state: touch
+    path: /var/log/xdebug/xdebug
+    owner: www-data
+    group: www-data
+    mode: 0777
+  when: fpm_debug
+
 
 - name: Configure xdebug
   template:
     src: xdebug.ini
-    dest: /etc/php5/mods-available/xdebug.ini
+    dest: "{{fpm_php_config_dir}}/mods-available/xdebug.ini"
   when: fpm_debug
   notify:
-    - restart php5-fpm
+    - restart php7.0-fpm
     - restart nginx
-
-- name: Fix xdebug extension
-  shell: echo zend_extension="$(find /usr/lib/php5/ -name xdebug.so)" >> /etc/php5/mods-available/xdebug.ini
-  when: fpm_debug
 
 - name: Disable default pool
   # Move the default pool if they haven't be moved.
@@ -51,27 +55,27 @@
     {{ fpm_pool_dir }}/www.conf
     {{ fpm_pool_dir }}/www.disabled
     creates={{ fpm_pool_dir }}/www.disabled
-  notify: restart php5-fpm
+  notify: restart php7.0-fpm
 
 - name: Copy php-fpm configuration
   template:
     src: web.conf
     dest: "{{ fpm_pool }}"
-  notify: restart php5-fpm
+  notify: restart php7.0-fpm
 
 - name: Change upload max file size
   lineinfile:
-    name: /etc/php5/fpm/php.ini
+    name: "{{fpm_php_config_dir}}/fpm/php.ini"
     regexp: 'upload_max_filesize'
     line: 'upload_max_filesize = {{ fpm_upload_max_filesize }}M'
 
 - name: Change max post size
   lineinfile:
-    name: /etc/php5/fpm/php.ini
+    name: "{{fpm_php_config_dir}}/fpm/php.ini"
     regexp: 'post_max_size'
     line: 'post_max_size = {{ fpm_max_body_size }}M'
   notify:
-    - restart php5-fpm
+    - restart php7.0-fpm
     - restart nginx
   tags:
     - config
@@ -79,7 +83,7 @@
 
 - name: Change upload max file size
   lineinfile:
-    name: /etc/php5/fpm/php.ini
+    name: "{{fpm_php_config_dir}}/fpm/php.ini"
     regexp: 'max_execution_time'
     line: 'max_execution_time = {{ fpm_max_execution_time }}'
 
@@ -97,7 +101,7 @@
     regexp: "realpath_cache_size"
     line: "realpath_cache_size={{ fpm_realpath_cache_size }}K"
   notify:
-    - restart php5-fpm
+    - restart php7.0-fpm
   tags:
     - php-fpm
     - php-config
@@ -108,12 +112,13 @@
     regexp: "realpath_cache_ttl"
     line: "realpath_cache_ttl={{ fpm_realpath_cache_ttl }}"
   notify:
-    - restart php5-fpm
+    - php7.0-fpm
+    - restart php7.0-fpm
   tags:
     - php-fpm
     - php-config
 
 - name: Force restart of FPM
   service:
-    name: php5-fpm
+    name: php7.0-fpm
     state: restarted
